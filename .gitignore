@@ -1,5 +1,27 @@
-.venv/
+# API configuration with sensitive keys
+api_config.py
+
+# Python cache files
 __pycache__/
 *.py[cod]
 *$py.class
-.DS_Store 
+
+# Environment files
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Output files
+*.json
+*.csv
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 

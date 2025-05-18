@@ -1,14 +1,43 @@
-# Instagram Follower Analyzer
+# Instagram Follower Analysis
 
-This tool analyzes Instagram follower data from a JSON file to predict the gender and ethnicity of followers based on their names.
+This tool analyzes Instagram follower data to determine demographic information using the Perplexity API.
 
-## Installation
+## Setup
 
 1. Clone this repository
-2. Install dependencies:
+2. Edit `api_config.py` and add your Perplexity API key:
+   ```python
+   PERPLEXITY_API_KEY = "your_actual_api_key_here"
    ```
-   pip install -r requirements.txt
-   ```
+3. Make sure your Instagram data JSON file is available
+
+## Usage
+
+Run the script with the following command:
+
+```bash
+python instagram_follower_analysis.py --input path/to/instagram_data.json [--output results.json] [--human-only]
+```
+
+### Arguments:
+
+- `--input` or `-i`: Path to JSON file with Instagram data (required)
+- `--output` or `-o`: Output file path for saving results (optional)
+- `--human-only`: Filter out non-human accounts (optional)
+- `--api-key`: Directly provide a Perplexity API key (optional)
+
+### API Key Options:
+
+The script will try to find your Perplexity API key in the following order:
+1. Command-line argument `--api-key`
+2. Environment variable `PERPLEXITY_API_KEY`
+3. The `api_config.py` file
+
+## Example
+
+```bash
+python instagram_follower_analysis.py --input data/followers.json --output results.json --human-only
+```
 
 ## Features
 

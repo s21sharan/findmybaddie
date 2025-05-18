@@ -8,6 +8,7 @@ from collections import defaultdict
 import requests
 from pathlib import Path
 import time
+import importlib.util
 
 def load_json_data(file_path):
     """Load JSON data from file"""
@@ -194,6 +195,20 @@ Be concise. Format must be parseable JSON without extra text."""
     
     return followers
 
+def load_api_key():
+    """Attempt to load the Perplexity API key from api_config.py"""
+    try:
+        # Try to import api_config module
+        spec = importlib.util.spec_from_file_location("api_config", "api_config.py")
+        if spec and spec.loader:
+            api_config = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(api_config)
+            return getattr(api_config, "PERPLEXITY_API_KEY", "")
+        return ""
+    except (ImportError, FileNotFoundError):
+        print("api_config.py not found or couldn't be imported")
+        return ""
+
 def main():
     parser = argparse.ArgumentParser(description='Analyze Instagram followers from JSON data')
     parser.add_argument('--input', '-i', required=True, help='Path to JSON file with Instagram data')
@@ -203,8 +218,11 @@ def main():
     
     args = parser.parse_args()
     
-    # Get API key from args or environment
-    api_key = args.api_key or os.environ.get("PERPLEXITY_API_KEY", "")
+    # Get API key from args, environment, or config file
+    api_key = args.api_key or os.environ.get("PERPLEXITY_API_KEY", "") or load_api_key()
+    
+    if not api_key:
+        print("Warning: No Perplexity API key found. Please provide one via --api-key argument, PERPLEXITY_API_KEY environment variable, or in api_config.py")
     
     # Load data
     print(f"Loading data from {args.input}...")
